@@ -1,1 +1,542 @@
 # Wilsonneverquit.github.io
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>感恩主题小组作业_25数一吴宇淞</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f5eb;
+      color: #4a4a4a;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #e07a5f;
+      color: white;
+      text-align: center;
+      padding: 2rem 0;
+      font-size: 2rem;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    section {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+    }
+
+    h2 {
+      color: #e07a5f;
+      border-bottom: 2px solid #f2cc8f;
+      padding-bottom: 0.5rem;
+    }
+
+    .poem {
+      font-style: italic;
+      text-align: center;
+      line-height: 2;
+      font-size: 1.1em;
+      color: #6d6875;
+    }
+
+    .story-wall {
+      display: flex;
+      overflow-x: auto;
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+
+    .story-card {
+      min-width: 250px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      background-color: #fdfcfb;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-designer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card-preview-container {
+      position: relative;
+      width: 300px;
+      height: 400px;
+      margin: 1rem 0;
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .card-preview {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background-color: #fffaf3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card-text {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 18px;
+      text-align: center;
+      width: 80%;
+      color: #4a4a4a;
+      font-family: '楷体', cursive;
+      user-select: none;
+      z-index: 2;
+    }
+
+    .sticker {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      cursor: move;
+      z-index: 1;
+      user-select: none;
+      transition: none;
+    }
+
+    .controls-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 1rem 0;
+    }
+
+    input,
+    textarea,
+    button,
+    select {
+      margin: 0.3rem 0;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #e07a5f;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      width: auto;
+      min-width: 120px;
+    }
+
+    button:hover {
+      background-color: #c96b52;
+    }
+
+    .upload-area {
+      border: 2px dashed #ccc;
+      padding: 1rem;
+      text-align: center;
+      margin: 1rem 0;
+      cursor: pointer;
+    }
+
+    .upload-area:hover {
+      border-color: #e07a5f;
+    }
+
+    .sticker-palette {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 1rem 0;
+    }
+
+    .sticker-option {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      object-fit: contain;
+      background-color: white;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .sticker-controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 1rem 0;
+      padding: 1rem;
+      background-color: #f8f8f8;
+      border-radius: 8px;
+      border: 1px dashed #ddd;
+    }
+
+    .sticker-control-btn {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .active-sticker {
+      outline: 2px dashed #e07a5f;
+    }
+  </style>
+</head>
+
+<body>
+  <header>感恩的心</header>
+  <div class="container">
+    <!-- 感恩小诗 -->
+    <section id="poem-section">
+      <h2>✨ 一首小诗</h2>
+      <div class="poem">
+        谢谢你，清晨的阳光<br />
+        照亮我前行的方向<br />
+        谢谢你，夜晚的星光<br />
+        陪伴我不惧黑暗漫长<br /><br />
+        谢谢你，母亲的双手<br />
+        为我织出温暖衣裳<br />
+        谢谢你，朋友的笑容<br />
+        让我懂得分享希望<br /><br />
+        感恩每一滴雨露<br />
+        滴滴滋润心田成长<br />
+        感恩每一次跌倒<br />
+        教会我坚强<br /><br />
+        感恩，是心底最温柔的光<br />
+        照亮世界，也照亮自己<br />
+        让爱，在人间流转不息
+      </div>
+    </section>
+
+    <!-- 暖心故事墙 -->
+    <section id="story-wall-section">
+      <h2>❤️ 暖心故事墙</h2>
+      <div class="story-wall">
+        <div class="story-card">
+          <h3>陌生人的伞</h3>
+          <p>下雨天，一位老人没带伞。正当他准备冒雨回家时，一个中学生默默把伞递给他：“爷爷，您拿去吧。”第二天，老人在学校门口等了两个小时，只为把伞还回去，并送上一杯热奶茶。</p>
+        </div>
+        <div class="story-card">
+          <h3>一碗面的温暖</h3>
+          <p>深夜，女孩因失恋在街边哭泣。面馆老板默默端来一碗热腾腾的牛肉面：“孩子，人生再难，也得吃口热乎的。”十年后，她开了自己的面馆，墙上写着：“本店第一碗面免费——因为我也曾被温暖过。”</p>
+        </div>
+        <div class="story-card">
+          <h3>欢迎分享</h3>
+          <p>如果你也想分享暖心故事，将正能量传递下去，欢迎投稿wys15889630637@outlook.com</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 感恩卡生成器 -->
+    <section id="card-section">
+      <h2>🎨 制作你的感恩卡</h2>
+      <div class="card-designer">
+        <!-- 卡片预览 -->
+        <div class="card-preview-container">
+          <div class="card-preview" id="card-preview">
+            <img src="https://bailian-bmp-pre.oss-cn-hangzhou.aliyuncs.com/public/system_agent/PlaceHolder.png"
+              alt="背景图" id="bg-image" style="position:absolute; width:100%; height:100%; object-fit:cover; z-index:0;"
+              class="hidden">
+            <div class="card-text" id="card-text">感谢有你</div>
+            <div id="stickers-container"></div>
+          </div>
+        </div>
+
+        <!-- 文字设置 -->
+        <textarea id="message-input" placeholder="输入你想表达的感恩话语..." rows="2">感谢有你</textarea>
+        <div class="controls-group">
+          <label>字号: </label>
+          <input type="range" id="font-size" min="12" max="40" value="18" step="1">
+          <span id="font-size-display">18px</span>
+        </div>
+
+        <!-- 背景上传 -->
+        <div class="upload-area" id="upload-area">
+          <p>📁 点击上传自定义背景</p>
+          <input type="file" id="bg-upload" accept="image/*" class="hidden">
+        </div>
+
+        <!-- 贴图选择 -->
+        <h3>🖼️ 添加贴图</h3>
+        <div class="sticker-palette">
+
+          <img class="sticker-option" src="https://cdn-icons-png.flaticon.com/512/3075/3075594.png" alt="花朵"
+            data-src="https://cdn-icons-png.flaticon.com/512/3075/3075594.png">
+          <img class="sticker-option" src="https://cdn-icons-png.flaticon.com/512/2589/2589168.png" alt="太阳"
+            data-src="https://cdn-icons-png.flaticon.com/512/2589/2589168.png">
+
+          <img class="sticker-option" src="https://cdn-icons-png.flaticon.com/512/2923/2923656.png" alt="和平鸽"
+            data-src="https://cdn-icons-png.flaticon.com/512/2923/2923656.png">
+          <img class="sticker-option" src="https://cdn-icons-png.flaticon.com/512/3342/3342455.png" alt="笑脸"
+            data-src="https://cdn-icons-png.flaticon.com/512/3342/3342455.png">
+
+        </div>
+
+        <!-- 贴图操作控件 -->
+        <div class="sticker-controls hidden" id="sticker-controls">
+          <button class="sticker-control-btn" id="resize-up">🔼 放大</button>
+          <button class="sticker-control-btn" id="resize-down">🔽 缩小</button>
+          <button class="sticker-control-btn" id="rotate-left">◀️ 左转</button>
+          <button class="sticker-control-btn" id="rotate-right">▶️ 右转</button>
+          <button class="sticker-control-btn" id="delete-sticker">🗑️ 删除</button>
+        </div>
+
+        <!-- 下载按钮 -->
+        <button id="download-btn">📥 下载为图片</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    // 元素获取
+    const messageInput = document.getElementById('message-input');
+    const cardText = document.getElementById('card-text');
+    const fontSizeSlider = document.getElementById('font-size');
+    const fontSizeDisplay = document.getElementById('font-size-display');
+    const bgUpload = document.getElementById('bg-upload');
+    const uploadArea = document.getElementById('upload-area');
+    const stickersContainer = document.getElementById('stickers-container');
+    const stickerOptions = document.querySelectorAll('.sticker-option');
+    const cardPreview = document.getElementById('card-preview');
+    const bgImage = document.getElementById('bg-image');
+    const downloadBtn = document.getElementById('download-btn');
+    const stickerControls = document.getElementById('sticker-controls');
+    const resizeUpBtn = document.getElementById('resize-up');
+    const resizeDownBtn = document.getElementById('resize-down');
+    const rotateLeftBtn = document.getElementById('rotate-right'); // 注意：右转按钮实际是左转功能
+    const rotateRightBtn = document.getElementById('rotate-left'); // 注意：左转按钮实际是右转功能
+    const deleteStickerBtn = document.getElementById('delete-sticker');
+
+    // 当前选中的贴图
+    let activeSticker = null;
+
+    // 更新文字内容
+    messageInput.addEventListener('input', function () {
+      cardText.textContent = this.value || '感谢有你';
+    });
+
+    // 调整字号
+    fontSizeSlider.addEventListener('input', function () {
+      const size = this.value + 'px';
+      cardText.style.fontSize = size;
+      fontSizeDisplay.textContent = size;
+    });
+
+    // 上传背景图
+    uploadArea.addEventListener('click', function () {
+      bgUpload.click();
+    });
+
+    bgUpload.addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (file && file.type.match('image.*')) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          bgImage.src = e.target.result;
+          bgImage.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // 添加贴图
+    let stickerId = 0;
+    stickerOptions.forEach(option => {
+      option.addEventListener('click', function () {
+        const src = this.getAttribute('data-src');
+        addSticker(src);
+      });
+    });
+
+    function addSticker(src) {
+      const sticker = document.createElement('img');
+      sticker.src = src;
+      sticker.className = 'sticker';
+      sticker.id = 'sticker-' + (++stickerId);
+      sticker.style.left = Math.random() * 200 + 50 + 'px';
+      sticker.style.top = Math.random() * 300 + 50 + 'px';
+      sticker.style.width = '50px';
+      sticker.style.height = '50px';
+      sticker.style.transform = 'rotate(0deg)';
+
+      stickersContainer.appendChild(sticker);
+
+      // 激活贴图（点击选择）
+      sticker.addEventListener('click', function (e) {
+        e.stopPropagation();
+        setActiveSticker(sticker);
+      });
+
+      // 拖动贴图
+      setupDrag(sticker);
+    }
+
+    function setupDrag(sticker) {
+      let isDragging = false;
+      let offsetX, offsetY;
+
+      sticker.addEventListener('mousedown', function (e) {
+        isDragging = true;
+        offsetX = e.clientX - sticker.getBoundingClientRect().left;
+        offsetY = e.clientY - sticker.getBoundingClientRect().top;
+        sticker.style.zIndex = 10;
+        setActiveSticker(sticker);
+        e.preventDefault();
+      });
+
+      document.addEventListener('mousemove', function (e) {
+        if (!isDragging) return;
+        const rect = cardPreview.getBoundingClientRect();
+        let x = e.clientX - rect.left - offsetX;
+        let y = e.clientY - rect.top - offsetY;
+        // 边界限制
+        x = Math.max(0, Math.min(x, rect.width - parseInt(sticker.style.width)));
+        y = Math.max(0, Math.min(y, rect.height - parseInt(sticker.style.height)));
+        sticker.style.left = x + 'px';
+        sticker.style.top = y + 'px';
+      });
+
+      document.addEventListener('mouseup', function () {
+        if (isDragging) {
+          isDragging = false;
+          sticker.style.zIndex = 1;
+        }
+      });
+    }
+
+    function setActiveSticker(sticker) {
+      // 移除之前激活状态
+      if (activeSticker) {
+        activeSticker.classList.remove('active-sticker');
+      }
+      // 设置当前贴图为激活状态
+      activeSticker = sticker;
+      sticker.classList.add('active-sticker');
+      stickerControls.classList.remove('hidden');
+    }
+
+    // 点击空白处取消选中
+    cardPreview.addEventListener('click', function (e) {
+      if (e.target === cardPreview || e.target === bgImage) {
+        if (activeSticker) {
+          activeSticker.classList.remove('active-sticker');
+          activeSticker = null;
+        }
+        stickerControls.classList.add('hidden');
+      }
+    });
+
+    // 控制按钮功能
+    resizeUpBtn.addEventListener('click', function () {
+      if (!activeSticker) return;
+      const currentWidth = parseFloat(activeSticker.style.width);
+      const currentHeight = parseFloat(activeSticker.style.height);
+      activeSticker.style.width = (currentWidth + 5) + 'px';
+      activeSticker.style.height = (currentHeight + 5) + 'px';
+    });
+
+    resizeDownBtn.addEventListener('click', function () {
+      if (!activeSticker) return;
+      const currentWidth = parseFloat(activeSticker.style.width);
+      const currentHeight = parseFloat(activeSticker.style.height);
+      if (currentWidth > 10) {
+        activeSticker.style.width = (currentWidth - 5) + 'px';
+        activeSticker.style.height = (currentHeight - 5) + 'px';
+      }
+    });
+
+    rotateRightBtn.addEventListener('click', function () { // 实际是左转
+      if (!activeSticker) return;
+      const currentRotation = getRotationDegrees(activeSticker);
+      activeSticker.style.transform = `rotate(${currentRotation - 15}deg)`;
+    });
+
+    rotateLeftBtn.addEventListener('click', function () { // 实际是右转
+      if (!activeSticker) return;
+      const currentRotation = getRotationDegrees(activeSticker);
+      activeSticker.style.transform = `rotate(${currentRotation + 15}deg)`;
+    });
+
+    deleteStickerBtn.addEventListener('click', function () {
+      if (!activeSticker) return;
+      stickersContainer.removeChild(activeSticker);
+      activeSticker = null;
+      stickerControls.classList.add('hidden');
+    });
+
+    // 获取当前旋转角度
+    function getRotationDegrees(element) {
+      const transform = window.getComputedStyle(element).getPropertyValue('transform');
+      if (transform === 'none') return 0;
+      const values = transform.split('(')[1].split(')')[0].split(',');
+      const a = values[0];
+      const b = values[1];
+      const angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+      return angle < 0 ? angle + 360 : angle;
+    }
+
+    // 下载卡片为图片
+    downloadBtn.addEventListener('click', function () {
+      // 确保背景显示
+      bgImage.classList.remove('hidden');
+      // 临时移除拖拽和交互样式
+      const stickers = document.querySelectorAll('.sticker');
+      stickers.forEach(s => {
+        s.style.pointerEvents = 'none';
+        s.classList.remove('active-sticker');
+      });
+      stickerControls.classList.add('hidden');
+
+      html2canvas(cardPreview, {
+        backgroundColor: null,
+        useCORS: true,
+        allowTaint: true,
+        scale: 2 // 提高清晰度
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = '感恩卡片.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+
+        // 恢复交互
+        stickers.forEach(s => {
+          s.style.pointerEvents = 'auto';
+        });
+      }).catch(err => {
+        console.error(err);
+        alert('生成图片失败，请重试。错误：' + err.message);
+      });
+    });
+  </script>
+</body>
+
+</html>
